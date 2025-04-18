@@ -7,7 +7,9 @@ header={"Content-Type":"application/json",
 
 # API call occurs & response code is printed
 response = requests.get(url, headers=header)
+print()
 print(response)
+print()
 
 # Call results are stored in variable & json is normalized and cut down to data block
 responseData = response.json()
@@ -21,6 +23,7 @@ print(selected_columns)
 # Ask user what top anime they'd like to read more about (ID)
 print()
 userInput = input("Enter anime ID you want to query:")
+print()
 
 #User input tranlated to integer
 mal_id_variable = int(userInput)
