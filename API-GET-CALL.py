@@ -25,11 +25,13 @@ print()
 userInput = input("Enter anime ID you want to query:")
 print()
 
-#User input tranlated to integer
+# User input translated to integer
 mal_id_variable = int(userInput)
+
+# Pull the specific mal_id entry using user input
 filteredMainID = cleanedUpJSON[cleanedUpJSON['mal_id'] == mal_id_variable]
 
-# Target columns to extract from JSON (reuse desired_columns & selected columns)
+# Target columns to extract from mal_id entered by user (reuse desired_columns & selected columns)
 desired_columns = ['mal_id', 'url', 'title_english']  
 selected_columns = filteredMainID[desired_columns]
 print(selected_columns)
