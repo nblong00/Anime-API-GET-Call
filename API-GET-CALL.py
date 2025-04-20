@@ -8,8 +8,12 @@ header={"Content-Type":"application/json",
 # API call occurs & response code is printed
 response = requests.get(url, headers=header)
 print()
-print(response)
-print()
+
+# Check if API call was successful
+if response.status_code != 200:
+    print(f"Error: API request failed with status code {response.status_code}")
+    input("Press ENTER to close...")
+    exit()
 
 # Call results are stored in variable & json is normalized and cut down to data block
 responseData = response.json()
@@ -38,7 +42,7 @@ print(selected_columns)
 
 # Wait for user input to close window 
 print()
-input("Operation complete. Please key to close...")
+input("Operation complete. Please ENTER to close...")
 
 # Leaving in to let me get copy of the fields returned
 # cleanedUpJSON.to_csv('E:\\AWS_DEV\\PythonScripts\\API-GET-CALL\\temp.csv')
