@@ -1,5 +1,6 @@
 import requests
 import pandas
+import time
 
 url = 'https://api.jikan.moe/v4/top/anime'
 header={"Content-Type":"application/json",
@@ -8,6 +9,9 @@ header={"Content-Type":"application/json",
 # API call occurs & response code is printed
 response = requests.get(url, headers=header)
 print()
+print('Top Anime GET v1.0')
+print()
+time.sleep(2)
 
 # Check if API call was successful
 if response.status_code != 200:
@@ -20,9 +24,9 @@ responseData = response.json()
 cleanedUpJSON = pandas.json_normalize(responseData, 'data')
 
 # Target columns to extract from JSON
-desired_columns = ['mal_id', 'title_english']  
-selected_columns = cleanedUpJSON[desired_columns]
-print(selected_columns)
+desiredColumns = ['mal_id', 'title_english']  
+selectedColumns = cleanedUpJSON[desiredColumns]
+print(selectedColumns)
 
 # Ask user what top anime they'd like to read more about (ID)
 print()
@@ -38,6 +42,7 @@ try:
     # Check if input is empty
     if not userInput:
         raise ValueError("No input provided.")
+    
     # Confirm if input is positive, else the program should exit
     if mal_id_variable <= 0:
         raise ValueError("Anime ID must be a positive integer.")
@@ -51,14 +56,13 @@ except ValueError as e:
     input("Operation failed. Press ENTER to close...")
     exit()
 
-
 # Pull the specific mal_id entry using user input
 filteredMainID = cleanedUpJSON[cleanedUpJSON['mal_id'] == mal_id_variable]
 
 # Target columns to extract from mal_id entered by user (reuse desired_columns & selected columns)
-desired_columns = ['mal_id', 'url', 'title_english']  
-selected_columns = filteredMainID[desired_columns]
-print(selected_columns)
+desiredColumns = ['mal_id', 'url', 'title_english']  
+selectedColumns = filteredMainID[desiredColumns]
+print(selectedColumns)
 
 # Wait for user input to close window 
 print()
@@ -66,6 +70,3 @@ input("Operation complete. Please ENTER to close...")
 
 # Leaving in to let me get copy of the fields returned
 # cleanedUpJSON.to_csv('E:\\AWS_DEV\\PythonScripts\\API-GET-CALL\\temp.csv')
-
-
-
