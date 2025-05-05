@@ -28,28 +28,28 @@ desiredColumns = ['mal_id', 'title_english']
 selectedColumns = cleanedUpJSON[desiredColumns]
 print(selectedColumns)
 
-# Ask user what top anime they'd like to read more about (ID)
-print()
-userInput = input("Enter anime ID you want to query:")
-print()
-
 # Error checking for user input
 try:
-    
-    # Convert input to integer
-    mal_id_variable = int(userInput)
+# Ask user what top anime they'd like to read more about (ID)
+    print()
+    mal_id_variable = input("Enter anime ID you want to query: ")
+    print()
 
     # Check if input is empty
-    if not userInput:
+    if not mal_id_variable:
         raise ValueError("No input provided.")
     
     # Confirm if input is positive, else the program should exit
-    if mal_id_variable <= 0:
+    elif int(mal_id_variable) <= 0:
         raise ValueError("Anime ID must be a positive integer.")
 
     # Check if mal_id exists in the JSON data
-    if mal_id_variable not in cleanedUpJSON['mal_id'].values:
+    elif int(mal_id_variable) not in cleanedUpJSON['mal_id'].values:
         raise ValueError(f"Anime ID '{mal_id_variable}' not found in the top anime list.")
+
+    # Switch user input to integer after error checking
+    else:
+        mal_id_variable = int(mal_id_variable)
 
 except ValueError as e:
     print(f"Error: {e}")
