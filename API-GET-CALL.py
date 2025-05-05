@@ -11,7 +11,7 @@ response = requests.get(url, headers=header)
 print()
 print('Top Anime GET v1.0')
 print()
-time.sleep(2)
+time.sleep(1)
 
 # Check if API call was successful
 if response.status_code != 200:
