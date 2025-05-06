@@ -6,6 +6,13 @@ url = 'https://api.jikan.moe/v4/top/anime'
 header={"Content-Type":"application/json",
         "Accept-Encoding":"deflate"}
 
+
+def apiReturnColumns(columns):
+    desiredColumns = columns 
+    selectedColumns = cleanedUpJSON[desiredColumns]
+    return selectedColumns
+
+
 # API call occurs & response code is printed
 response = requests.get(url, headers=header)
 print()
@@ -25,8 +32,7 @@ cleanedUpJSON = pandas.json_normalize(responseData, 'data')
 
 # Target columns to extract from JSON
 desiredColumns = ['mal_id', 'title_english']  
-selectedColumns = cleanedUpJSON[desiredColumns]
-print(selectedColumns)
+print(apiReturnColumns(desiredColumns))
 
 # Error checking for user input
 try:
@@ -57,12 +63,11 @@ except ValueError as e:
     exit()
 
 # Pull the specific mal_id entry using user input
-filteredMainID = cleanedUpJSON[cleanedUpJSON['mal_id'] == mal_id_variable]
+cleanedUpJSON = cleanedUpJSON[cleanedUpJSON['mal_id'] == mal_id_variable]
 
 # Target columns to extract from mal_id entered by user (reuse desired_columns & selected columns)
 desiredColumns = ['mal_id', 'url', 'title_english']  
-selectedColumns = filteredMainID[desiredColumns]
-print(selectedColumns)
+print(apiReturnColumns(desiredColumns))
 
 # Wait for user input to close window 
 print()
