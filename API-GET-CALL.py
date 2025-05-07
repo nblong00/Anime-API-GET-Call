@@ -19,7 +19,7 @@ def exitLogic():
         if anotherLoop == "Yes":
             break
         elif i >= 3:
-            return "3"
+            return "exit"
         elif anotherLoop == "No":
             i += 3
             return anotherLoop
@@ -89,7 +89,7 @@ while True:
     
     exitChoice = exitLogic()
 
-    if exitChoice == "No" or exitChoice == "3":
+    if exitChoice == "No" or exitChoice == "exit":
         break
 
 # Wait for user input to close window 
