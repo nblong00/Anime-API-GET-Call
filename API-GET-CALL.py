@@ -45,9 +45,8 @@ while True:
     responseData = response.json()
     cleanedUpJSON = pandas.json_normalize(responseData, 'data')
 
-    # Target columns to extract from JSON
-    desiredColumns = ['mal_id', 'title_english']  
-    print(apiReturnColumns(desiredColumns))
+    # Target columns to extract from JSON  
+    print(apiReturnColumns(['mal_id', 'title_english']))
 
     # Error checking for user input
     try:
@@ -80,9 +79,8 @@ while True:
     # Pull the specific mal_id entry using user input
     cleanedUpJSON = cleanedUpJSON[cleanedUpJSON['mal_id'] == mal_id_variable]
 
-    # Target columns to extract from mal_id entered by user (reuse desired_columns & selected columns)
-    desiredColumns = ['mal_id', 'url', 'title_english']  
-    print(apiReturnColumns(desiredColumns))
+    # Target columns to extract from mal_id entered by user
+    print(apiReturnColumns(['mal_id', 'url', 'title_english']))
 
     time.sleep(.5)
     print()
