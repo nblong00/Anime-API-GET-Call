@@ -7,24 +7,21 @@ header={"Content-Type":"application/json",
         "Accept-Encoding":"deflate"}
 
 
-def apiReturnColumns(columns):
+def apiReturnColumns(columns, normalizedJSON):
     desiredColumns = columns 
-    selectedColumns = cleanedUpJSON[desiredColumns]
+    selectedColumns = normalizedJSON[desiredColumns]
     return selectedColumns
 
 def exitLogic():
-    for i in range(4):
+    for i in range(3):
         anotherLoop = input("Do you want to run another GET call? (Enter Yes/No) ").title()
-        
         if anotherLoop == "Yes":
             break
-        elif i >= 3:
+        elif i == 2 or anotherLoop == "No":
             return "exit"
-        elif anotherLoop == "No":
-            i += 3
-            return anotherLoop
-        elif anotherLoop != "No" or anotherLoop != "Yes":
+        else:
             print("Invalid entry.")
+
 
 while True:
 
@@ -46,7 +43,7 @@ while True:
     cleanedUpJSON = pandas.json_normalize(responseData, 'data')
 
     # Target columns to extract from JSON  
-    print(apiReturnColumns(['mal_id', 'title_english']))
+    print(apiReturnColumns(['mal_id', 'title_english'], cleanedUpJSON))
 
     # Error checking for user input
     try:
@@ -80,14 +77,12 @@ while True:
     cleanedUpJSON = cleanedUpJSON[cleanedUpJSON['mal_id'] == mal_id_variable]
 
     # Target columns to extract from mal_id entered by user
-    print(apiReturnColumns(['mal_id', 'url', 'title_english']))
+    print(apiReturnColumns(['mal_id', 'url', 'title_english'], cleanedUpJSON))
 
     time.sleep(.5)
     print()
-    
-    exitChoice = exitLogic()
 
-    if exitChoice == "No" or exitChoice == "exit":
+    if exitLogic() == "exit":
         break
 
 # Wait for user input to close window 
