@@ -6,24 +6,7 @@ url = 'https://api.jikan.moe/v4/top/anime'
 header={"Content-Type":"application/json",
         "Accept-Encoding":"deflate"}
 
-
-def apiReturnColumns(columns, normalizedJSON):
-    desiredColumns = columns 
-    selectedColumns = normalizedJSON[desiredColumns]
-    return selectedColumns
-
-def exitLogic():
-    for i in range(3):
-        anotherLoop = input("Do you want to run another GET call? (Enter Yes/No) ").title()
-        if anotherLoop == "Yes":
-            break
-        elif i == 2 or anotherLoop == "No":
-            return "exit"
-        else:
-            print("Invalid entry.")
-
-
-while True:
+def apiCallAndJsonCleanup():
 
     # API call occurs & response code is printed
     response = requests.get(url, headers=header)
@@ -42,52 +25,70 @@ while True:
     responseData = response.json()
     cleanedUpJSON = pandas.json_normalize(responseData, 'data')
 
-    # Target columns to extract from JSON  
-    print(apiReturnColumns(['mal_id', 'title_english'], cleanedUpJSON))
+    return cleanedUpJSON
 
-    # Error checking for user input
+def errorCheckingOnUserInput(normalizedJSON):
     try:
-    # Ask user what top anime they'd like to read more about (ID)
         print()
         mal_id_variable = input("Enter anime ID you want to query: ")
         print()
 
-        # Check if input is empty
         if not mal_id_variable:
             raise ValueError("No input provided.")
-        
-        # Confirm if input is positive, else the program should exit
         elif int(mal_id_variable) <= 0:
             raise ValueError("Anime ID must be a positive integer.")
-
-        # Check if mal_id exists in the JSON data
-        elif int(mal_id_variable) not in cleanedUpJSON['mal_id'].values:
+        elif int(mal_id_variable) not in normalizedJSON['mal_id'].values:
             raise ValueError(f"Anime ID '{mal_id_variable}' not found in the top anime list.")
-
-        # Switch user input to integer after error checking
         else:
             mal_id_variable = int(mal_id_variable)
-
+            return mal_id_variable
     except ValueError as e:
         print(f"Error: {e}")
         input("Operation failed. Press ENTER to close...")
         exit()
 
-    # Pull the specific mal_id entry using user input
-    cleanedUpJSON = cleanedUpJSON[cleanedUpJSON['mal_id'] == mal_id_variable]
 
-    # Target columns to extract from mal_id entered by user
-    print(apiReturnColumns(['mal_id', 'url', 'title_english'], cleanedUpJSON))
+def apiReturnColumns(columns, normalizedJSON):
+    desiredColumns = columns 
+    selectedColumns = normalizedJSON[desiredColumns]
+    return selectedColumns
 
-    time.sleep(.5)
+def exitLogic():
+    for i in range(3):
+        anotherLoop = input("Do you want to run another GET call? (Enter Yes/No) ").title()
+
+        if anotherLoop == "Yes":
+            break
+
+        elif i == 2 or anotherLoop == "No":
+            return "exit"
+        
+        else:
+            print("Invalid entry.")
+
+
+def main():
+    while True:
+        normalizedJSON = apiCallAndJsonCleanup()
+
+        print(apiReturnColumns(['mal_id', 'title_english'], normalizedJSON))
+
+        mal_id_input_verified = errorCheckingOnUserInput(normalizedJSON)
+
+        normalizedJSON = normalizedJSON[normalizedJSON['mal_id'] == mal_id_input_verified]
+
+        print(apiReturnColumns(['mal_id', 'url', 'title_english'], normalizedJSON))
+
+        time.sleep(.5)
+        print()
+
+        if exitLogic() == "exit":
+            break
+
     print()
+    input("Program exiting. Please ENTER to close...")
 
-    if exitLogic() == "exit":
-        break
+    # Leaving in to let me get copy of the fields returned
+    # normalizedJSON.to_csv('E:\\AWS_DEV\\PythonScripts\\API-GET-CALL\\temp.csv')
 
-# Wait for user input to close window 
-print()
-input("Program exiting. Please ENTER to close...")
-
-# Leaving in to let me get copy of the fields returned
-# cleanedUpJSON.to_csv('E:\\AWS_DEV\\PythonScripts\\API-GET-CALL\\temp.csv')
+main()
