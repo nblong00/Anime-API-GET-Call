@@ -1,21 +1,27 @@
 import requests
 import pandas
 import time
+import logging
+import utils
 
+logging.basicConfig(filename='program.log', level=logging.DEBUG)
 url = 'https://api.jikan.moe/v4/top/anime'
 header={"Content-Type":"application/json",
         "Accept-Encoding":"deflate"}
 
 
 def apiCallAndJsonCleanup():
+    timestamp = utils.get_dt()
     response = requests.get(url, headers=header)
     print('\nTop Anime GET v1.0\n')
     time.sleep(1)
     if response.status_code != 200:
         print(f"Error: API request failed with status code {response.status_code}")
-        input("Press ENTER to close...")
+        logging.error(timestamp + ' Response Code: ' + str(response.status_code))
+        input("\nPress ENTER to close...")
         exit()
     # Call results are stored in variable & json is normalized and cut down to data block
+    logging.info(timestamp + ' Response Code: ' + str(response.status_code))
     responseData = response.json()
     cleanedUpJSON = pandas.json_normalize(responseData, 'data')
     return cleanedUpJSON
@@ -68,8 +74,8 @@ def main():
         print()
         if exitLogic() == "exit":
             break
-    print()
-    input("Program exiting. Please ENTER to close...")
+    print("\nProgram exiting...")
+    time.sleep(0.5)
 
 
     # Leaving in to let me get copy of the fields returned
