@@ -4,7 +4,7 @@ import time
 import logging
 import utils
 
-logging.basicConfig(filename='program.log', level=logging.DEBUG)
+logging.basicConfig(filename='program.log', level=logging.INFO)
 url = 'https://api.jikan.moe/v4/top/anime'
 header={"Content-Type":"application/json",
         "Accept-Encoding":"deflate"}
