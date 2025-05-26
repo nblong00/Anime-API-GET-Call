@@ -79,6 +79,6 @@ def main():
 
 
     # Leaving in to let me get copy of the fields returned
-    # normalizedJSON.to_csv('E:\\AWS_DEV\\PythonScripts\\API-GET-CALL\\temp.csv')
+    #normalizedJSON.to_csv('E:\\DevStuff\\PythonScripts\\API-GET-CALL\\temp.csv')
 
 main()
